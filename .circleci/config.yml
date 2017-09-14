@@ -1,9 +1,21 @@
-dependencies:
-  override:
-    - pip install coveralls
+version: 2
 
 
-test:
-  override:
-    - python setup.py test
-    - coveralls
+jobs:
+  build:
+    docker:
+      - image: circleci/python:2.7
+
+    steps:
+      - add_ssh_keys
+      - checkout
+
+      - run:
+        name: Execute Unit Tests
+        command: python setup.py test
+
+      - run:
+          name: Upload Coverage
+          command:
+              | pip install coveralls
+              | coveralls
